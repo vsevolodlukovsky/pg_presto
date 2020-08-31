@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+    # use same settings in presto-etc/catalog/postgresql.properties
+      POSTGRES_PASSWORD: Password123
+      POSTGRES_USER: user123
+      POSTGRES_DB: presto
+    volumes:
+      - "./pg-data:/var/lib/postgresql/data"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8880:8080
+
+  presto:
+    image: prestosql/presto
+    restart: always
+    ports:
+      - 8881:8080
+    volumes:
+      - "./presto-data:/data/presto"
+      - "./presto-etc:/etc/presto"
